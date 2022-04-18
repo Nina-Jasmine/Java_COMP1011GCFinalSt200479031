@@ -1,5 +1,6 @@
 /*
-*
+* Name: Ni Na Liu
+* Student Number: 200479031
 * */
 
 package com.example.w22comp1011gctest2student;
