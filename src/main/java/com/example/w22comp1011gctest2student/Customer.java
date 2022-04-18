@@ -52,4 +52,7 @@ public class Customer {
          }
          return saved;
     }
+    public boolean isSaved5OrMore(){
+        return getSaved() >= 5;
+    }
 }
