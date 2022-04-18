@@ -1,3 +1,7 @@
+/*
+*
+* */
+
 package com.example.w22comp1011gctest2student;
 
 import com.google.gson.annotations.SerializedName;
@@ -38,5 +42,14 @@ public class Customer {
        return products.stream()
                 .mapToDouble(products -> products.getSalePrice())
                 .sum();
+    }
+
+    public double getSaved(){
+        double saved = 0;
+         for(Product product : products){
+
+             saved += product.getRegularPrice() - product.getSalePrice();
+         }
+         return saved;
     }
 }
