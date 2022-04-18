@@ -16,6 +16,8 @@ public class Customer {
     private String lastName;
     private String phoneNumber;
 
+
+    private String totalPurchases;
     @SerializedName("purchases")
     private ArrayList<Product> products;
 
@@ -39,12 +41,14 @@ public class Customer {
         return products;
     }
 
-    public double getTotalPurchases(){
+    public double getTotalPurchaseDouble(){
        return products.stream()
                 .mapToDouble(products -> products.getSalePrice())
                 .sum();
     }
-
+   public String getTotalPurchases(){
+        return String.format("$%.2f", getTotalPurchaseDouble());
+   }
     public double getSaved(){
         double saved = 0;
          for(Product product : products){
@@ -56,4 +60,6 @@ public class Customer {
     public boolean isSaved5OrMore(){
         return getSaved() >= 5;
     }
+
+
 }

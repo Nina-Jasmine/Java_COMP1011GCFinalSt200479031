@@ -5,13 +5,19 @@
 package com.example.w22comp1011gctest2student;
 
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 
-public class TableViewController {
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.ResourceBundle;
+
+public class TableViewController implements Initializable {
     @FXML
     private Label saleLabel;
 
@@ -48,9 +54,20 @@ public class TableViewController {
     @FXML
     private ImageView imageView;
 
+    private ReadJson ReadsJson;
+
+
+    ApiResponse apiResponse = ReadsJson.getApiResponseFromJson("customers.json");
+
+    ArrayList<Customer> customers = apiResponse.getCustomers();
+
+
     @FXML
     private void top10Customers()
     {
+
+
+
         System.out.println("called method top10Customers()");
     }
 
@@ -64,5 +81,24 @@ public class TableViewController {
     private void loadAllCustomers()
     {
         System.out.println("called method loadAllCustomers");
+
+        idColumn.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+        firstNameColumn.setCellValueFactory(new PropertyValueFactory<>("firstName"));
+        lastNameColumn.setCellValueFactory(new PropertyValueFactory<>("lastName"));
+        phoneColumn.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
+        totalPurchaseColumn.setCellValueFactory(new PropertyValueFactory<>("totalPurchases"));
+
+
+        tableView.getItems().clear();
+        tableView.getItems().addAll(customers);
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
+        loadAllCustomers();
+
+        rowsInTableLabel.setText("#Rows In Table "+tableView.getItems().size());
+
     }
 }

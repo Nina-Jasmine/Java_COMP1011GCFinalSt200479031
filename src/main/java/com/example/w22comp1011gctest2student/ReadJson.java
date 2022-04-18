@@ -31,9 +31,5 @@ public class ReadJson {
         return null;
     }
 
-    public static void main(String[] args) {
-        ApiResponse apiResponse = getApiResponseFromJson("customers.json");
-        System.out.println(apiResponse.getCustomers());
-    }
 
 }
