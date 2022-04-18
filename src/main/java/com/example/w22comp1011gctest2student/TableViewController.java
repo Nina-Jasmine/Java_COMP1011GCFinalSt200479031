@@ -63,23 +63,24 @@ public class TableViewController implements Initializable {
 
 
     @FXML
-    private void top10Customers()
-    {
-
-
+    private void top10Customers() {
+    
 
         System.out.println("called method top10Customers()");
     }
 
     @FXML
-    private void customersSavedOver5()
-    {
+    private void customersSavedOver5() {
+
+        customers.stream()
+                .filter(customers -> customers.isSaved5OrMore());
+
+        loadAllCustomers();
         System.out.println("called method customersSavedOver5()");
     }
 
     @FXML
-    private void loadAllCustomers()
-    {
+    private void loadAllCustomers() {
         System.out.println("called method loadAllCustomers");
 
         idColumn.setCellValueFactory(new PropertyValueFactory<>("customerId"));
@@ -93,12 +94,44 @@ public class TableViewController implements Initializable {
         tableView.getItems().addAll(customers);
     }
 
+    private void setLabels(Customer customer){
+
+        double sumOfRegularPrice = 0;
+        double sumOfSalePrice = 0;
+
+        for(Product product: customer.getProducts()){
+
+            sumOfRegularPrice += product.getRegularPrice();
+
+            sumOfSalePrice += product.getRegularPrice();
+        }
+        double saving = sumOfRegularPrice - sumOfRegularPrice;
+
+        msrpLabel.setText("Sum Of Regular Price: "+ sumOfRegularPrice);
+        saleLabel.setText("Sum Of Sale Price: "+ sumOfSalePrice);
+        savingsLabel.setText("Total Saving: "+ saving);
+    }
+
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
         loadAllCustomers();
+        top10Customers();
+        customersSavedOver5();
 
-        rowsInTableLabel.setText("#Rows In Table "+tableView.getItems().size());
+        rowsInTableLabel.setText("#Rows In Table " + tableView.getItems().size());
+
+        tableView.getSelectionModel().selectedItemProperty().addListener((obs, oldValue, selectedCustomer) -> {
+            purchaseListView.getItems().clear();
+            purchaseListView.getItems().addAll(selectedCustomer.getProducts());
+
+            setLabels(selectedCustomer);
+
+                }
+        );
+
 
     }
 }
+
