@@ -11,7 +11,8 @@ public class Customer {
     private String lastName;
     private String phoneNumber;
 
-    private ArrayList<Product> purchases;
+    @SerializedName("purchases")
+    private ArrayList<Product> products;
 
     public int getCustomerId() {
         return customerId;
@@ -29,7 +30,13 @@ public class Customer {
         return phoneNumber;
     }
 
-    public ArrayList<Product> getPurchases() {
-        return purchases;
+    public ArrayList<Product> getProducts() {
+        return products;
+    }
+
+    public double getTotalPurchases(){
+       return products.stream()
+                .mapToDouble(products -> products.getSalePrice())
+                .sum();
     }
 }
