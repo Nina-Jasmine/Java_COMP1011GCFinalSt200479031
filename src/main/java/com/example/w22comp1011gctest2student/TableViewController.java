@@ -11,6 +11,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.net.URL;
@@ -132,19 +133,27 @@ public class TableViewController implements Initializable {
         loadAllCustomers();
 
 
-
-
-
         tableView.getSelectionModel().selectedItemProperty().addListener((obs, oldValue, selectedCustomer) -> {
             purchaseListView.getItems().clear();
             purchaseListView.getItems().addAll(selectedCustomer.getProducts());
 
             setLabels(selectedCustomer);
+            imageView.setImage(null);
+
 
                 }
         );
 
+        purchaseListView.getSelectionModel().selectedItemProperty().addListener((obsPurchase, old, selectedProduct) -> {
 
-    }
-}
+            try {
+                imageView.setImage(new Image(selectedProduct.getImageUrl()));
+
+            } catch (Exception e) {
+                System.out.println(e.getStackTrace());
+            }
+        });
+
+
+    }}
 
