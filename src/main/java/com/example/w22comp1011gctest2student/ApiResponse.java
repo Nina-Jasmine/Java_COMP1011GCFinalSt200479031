@@ -5,6 +5,14 @@ import java.util.ArrayList;
 public class ApiResponse {
     @SerializedName("BusinessName")
     private String businessName;
+    @SerializedName("Customers")
+    private ArrayList<Customer> customers;
 
-    private Customer[] customers;
+    public String getBusinessName() {
+        return businessName;
+    }
+
+    public ArrayList<Customer> getCustomers() {
+        return customers;
+    }
 }
