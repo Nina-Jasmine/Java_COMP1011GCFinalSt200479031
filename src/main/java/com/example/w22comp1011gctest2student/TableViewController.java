@@ -75,7 +75,8 @@ public class TableViewController implements Initializable {
         customers.stream()
                 .filter(customers -> customers.isSaved5OrMore());
 
-        loadAllCustomers();
+        tableView.getItems().clear();
+        tableView.getItems().addAll(customers);
         System.out.println("called method customersSavedOver5()");
     }
 
@@ -105,7 +106,7 @@ public class TableViewController implements Initializable {
 
             sumOfSalePrice += product.getRegularPrice();
         }
-        double saving = sumOfRegularPrice - sumOfRegularPrice;
+        double saving = sumOfRegularPrice - sumOfSalePrice;
 
         msrpLabel.setText("Sum Of Regular Price: "+ sumOfRegularPrice);
         saleLabel.setText("Sum Of Sale Price: "+ sumOfSalePrice);
