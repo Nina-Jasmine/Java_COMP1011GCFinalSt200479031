@@ -16,6 +16,7 @@ import javafx.scene.image.ImageView;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class TableViewController implements Initializable {
     @FXML
@@ -72,11 +73,18 @@ public class TableViewController implements Initializable {
     @FXML
     private void customersSavedOver5() {
 
-        customers.stream()
-                .filter(customers -> customers.isSaved5OrMore());
+
+       // customers.stream()
+            //    .filter(Customer::isSaved5OrMore)
+            //    .collect(Collectors.toList());
+
+
 
         tableView.getItems().clear();
-        tableView.getItems().addAll(customers);
+        tableView.getItems().addAll(customers.stream()
+                .filter(Customer::isSaved5OrMore)
+                .collect(Collectors.toList()));
+        rowsInTableLabel.setText("#Rows In Table " + tableView.getItems().size());
         System.out.println("called method customersSavedOver5()");
     }
 
@@ -91,22 +99,26 @@ public class TableViewController implements Initializable {
         totalPurchaseColumn.setCellValueFactory(new PropertyValueFactory<>("totalPurchases"));
 
 
-        tableView.getItems().clear();
+         tableView.getItems().clear();
         tableView.getItems().addAll(customers);
+        rowsInTableLabel.setText("#Rows In Table " + tableView.getItems().size());
     }
 
     private void setLabels(Customer customer){
 
         double sumOfRegularPrice = 0;
         double sumOfSalePrice = 0;
+        double saving = 0;
 
         for(Product product: customer.getProducts()){
 
             sumOfRegularPrice += product.getRegularPrice();
 
-            sumOfSalePrice += product.getRegularPrice();
+            sumOfSalePrice += product.getSalePrice();
+
+            saving += (sumOfRegularPrice - sumOfSalePrice);
         }
-        double saving = sumOfRegularPrice - sumOfSalePrice;
+
 
         msrpLabel.setText("Sum Of Regular Price: "+ sumOfRegularPrice);
         saleLabel.setText("Sum Of Sale Price: "+ sumOfSalePrice);
@@ -118,10 +130,10 @@ public class TableViewController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 
         loadAllCustomers();
-        top10Customers();
-        customersSavedOver5();
 
-        rowsInTableLabel.setText("#Rows In Table " + tableView.getItems().size());
+
+
+
 
         tableView.getSelectionModel().selectedItemProperty().addListener((obs, oldValue, selectedCustomer) -> {
             purchaseListView.getItems().clear();
